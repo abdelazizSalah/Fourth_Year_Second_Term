@@ -1,7 +1,33 @@
+/*
+    @author: Abdelaziz Salah
+    @date: 15/2/2024
+    @breif: This file contains a C code to solve requirement 1 in parallel computing course.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 // #include <cstring>
 
+/*
+    @par: matrix: 2d matrix 
+    @par: nrows: number of rows
+    @par: ncols: number of columns
+
+    @desc: 
+        1. initialize a sum variable with 0 to carry the total sum
+        2. Iterate over the given number of columns. 
+            2.1. Allocate a result string 
+            2.2. Initialize it with empty string
+            2.3. create another empty string to convert any integer into string in it.
+            2.4. iterate from 0 to the given number of rows.
+                2.4.1. check if the current number was not negative
+                    2.4.1.1. convert the integer into string, and put it inside numInStr
+                    2.4.1.2. concatnate it to the result string.
+            2.5. convert the result into int, then add it to the sum variable
+            2.6. free the allocated string, then repeat.
+        3. return the sum. 
+
+*/
 int sumOfColumns (int **matrix, int nrows, int ncols) {
     int sum = 0; 
     for (int i = 0 ; i < ncols; i++) {
@@ -26,7 +52,7 @@ void freeMemory (int **matrix, int sz) {
     free(matrix);
 }
 
-void readInput(int **  matrix, int ncols, int nrows) {
+void fillMatrix(int **  matrix, int ncols, int nrows) {
     for (int i = 0; i < nrows; i++)
         for (int j = 0; j < ncols; j++) {
             int num; 
@@ -63,7 +89,7 @@ int main()
     }
 
     /// 4. fill the matrix
-    readInput(matrix, ncols, nrows); 
+    fillMatrix(matrix, ncols, nrows); 
 
     /// 5. call the function
     int sum = sumOfColumns(matrix, nrows, ncols); 
