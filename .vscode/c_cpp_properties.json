@@ -3,7 +3,9 @@
     {
       "name": "windows-gcc-x64",
       "includePath": [
-        "${workspaceFolder}/**"
+        
+        "${workspaceFolder}/**",
+        "C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.3\\include"
       ],
       "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
       "cStandard": "${default}",
