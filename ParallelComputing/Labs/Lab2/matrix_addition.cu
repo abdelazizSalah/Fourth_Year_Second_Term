@@ -222,6 +222,8 @@ int main()
         /// 4. use the kernel.
         dim3 blockSize = dim3(1,1,1); 
         dim3 threads = dim3(rows, cols, 1); 
+        
+        /// these kernels need to be defined.
         kernel1<<<>>>();
         kernel2<<<>>>();
         kernel3<<<>>>();
