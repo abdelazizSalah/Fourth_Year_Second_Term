@@ -3,6 +3,8 @@
 #include <stdlib.h>
 /// both of these libraries contains the content implementation of cuda.
 // #include <cuda.h>
+
+#include <assert.h>
 #include <cuda_device_runtime_api.h>
 #define bool int
 #define true 1
@@ -182,7 +184,7 @@ __global__ void kernel3(int ***A, int ***B, int ***C, int rows, int cols)
         return;
     for (int i = 0; i < rows; i++)
         (*C)[i][j] = (*A)[i][j] + (*B)[i][j];
-        // if (i < rows && j < cols)
+    // if (i < rows && j < cols)
 }
 
 void transfereDataFromTheDevice(
@@ -220,19 +222,36 @@ int main()
         transfereDataToTheDevice(h_A, h_B, d_A, d_B, rows, cols);
 
         /// 4. use the kernel.
-        dim3 blockSize = dim3(1,1,1); 
-        dim3 threads = dim3(rows, cols, 1); 
-        
-        /// these kernels need to be defined.
-        kernel1<<<>>>();
-        kernel2<<<>>>();
-        kernel3<<<>>>();
+        dim3 blockSize = dim3(1,1,1);
+        dim3 threads = dim3(rows, cols, 1);
 
-        /// 5. transfere data back to the host.
+        /// these kernels need to be defined.
+        dim3 threadsPerBlock(10,10);
+        dim3 numBlocks (10,10); 
+        // dim3 numBlocks((rows + threadsPerBlock.x - 1) / threadsPerBlock.x)
+        // dim3 threadsPerBlock(16, 16);
+        // dim3 numBlocks((cols + threadsPerBlock.x - 1) / threadsPerBlock.x, (rows + threadsPerBlock.y - 1) / threadsPerBlock.y);
+        kernel1<<<numBlocks,threadsPerBlock>>>(&d_A, &d_B, &d_Res, rows, cols);
+        // kernel2<<<>>>();
+        // kernel3<<<>>>();
+
+        /// 5. print the matrix
+        // printMatrix(rows, cols, h_Res);
+
+        // Verification
+        for(int i = 0; i < rows; i++){
+              for (int j = 0; j < cols; j++)
+                 assert(abs(h_Res[i][j] - h_A[i][j] - h_B[i][j]) < 0.1);
+        }
+        printf("h_Res[0] = %d\n", h_Res[0][1]);
+        printf("PASSED\n");
+
+        /// 6. transfere data back to the host.
         transfereDataFromTheDevice(d_Res, h_Res, rows, cols);
 
-        /// 6. free memory
+        /// 7. free memory
         freeTheMemoryHost(&h_A, &h_B, &h_Res, rows);
+        printf("Finished!");
     }
     return 0;
 }
