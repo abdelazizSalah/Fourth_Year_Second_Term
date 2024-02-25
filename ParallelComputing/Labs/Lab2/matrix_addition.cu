@@ -222,16 +222,16 @@ int main()
         transfereDataToTheDevice(h_A, h_B, d_A, d_B, rows, cols);
 
         /// 4. use the kernel.
-        dim3 blockSize = dim3(1,1,1);
+        dim3 blockSize = dim3(1, 1, 1);
         dim3 threads = dim3(rows, cols, 1);
 
         /// these kernels need to be defined.
-        dim3 threadsPerBlock(10,10);
-        dim3 numBlocks (10,10); 
+        dim3 threadsPerBlock(10, 10);
+        dim3 numBlocks(10, 10);
         // dim3 numBlocks((rows + threadsPerBlock.x - 1) / threadsPerBlock.x)
         // dim3 threadsPerBlock(16, 16);
         // dim3 numBlocks((cols + threadsPerBlock.x - 1) / threadsPerBlock.x, (rows + threadsPerBlock.y - 1) / threadsPerBlock.y);
-        kernel1<<<numBlocks,threadsPerBlock>>>(&d_A, &d_B, &d_Res, rows, cols);
+        kernel1<<<numBlocks, threadsPerBlock>>>(&d_A, &d_B, &d_Res, rows, cols);
         // kernel2<<<>>>();
         // kernel3<<<>>>();
 
@@ -239,9 +239,10 @@ int main()
         // printMatrix(rows, cols, h_Res);
 
         // Verification
-        for(int i = 0; i < rows; i++){
-              for (int j = 0; j < cols; j++)
-                 assert(abs(h_Res[i][j] - h_A[i][j] - h_B[i][j]) < 0.1);
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+                assert(abs(h_Res[i][j] - h_A[i][j] - h_B[i][j]) < 0.1);
         }
         printf("h_Res[0] = %d\n", h_Res[0][1]);
         printf("PASSED\n");
