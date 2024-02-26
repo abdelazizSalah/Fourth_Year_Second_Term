@@ -130,7 +130,6 @@ int main(int argc, char *argv[])
         {
             for (int j = 0; j < cols; j++)
                 fprintf(outputFile, "%.2f ", out[i][j]);
-
             fprintf(outputFile, "\n");
         }
 
@@ -165,8 +164,8 @@ int main(int argc, char *argv[])
         free(b);
         free(out);
 
-        // closing files
-        fclose(inputFile);
-        fclose(outputFile);
     }
+    // closing files
+    fclose(inputFile);
+    fclose(outputFile);
 }
